@@ -10,12 +10,18 @@ def main(filename):
     # print(sheet["A1"].value)
 
     sql = '''
-      UPDATE manufatura.os_itens itm SET
+      UPDATE manufatura.qualidade_ordens_servicos_itens itm SET
         preco_custo = :preco
-      FROM manufatura.os os
-      WHERE os.id = itm.os_id
-        AND os.produto_codigo = ':produto'
+      FROM manufatura.qualidade_ordens_servicos os
+      WHERE os.id = itm.numero
+        AND itm.codigo = ':produto'
         AND os.id = :os;
+
+      UPDATE estoque.produtos SET
+        custo = :preco,
+        custo_compra = :preco,
+        customedio = :preco
+      WHERE codigo = ':produto';
     '''
     os, produto, preco = None, None, None
 
